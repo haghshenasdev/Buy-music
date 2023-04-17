@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('music_id')->constrained('musics');
+            $table->foreignId('music_id')->constrained('musics')->cascadeOnDelete();
             $table->string('title');
             $table->string('path');
         });

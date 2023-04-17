@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('amount');
             $table->foreignId('user')->constrained('users');
-            $table->foreignId('music')->constrained('musics');
+            $table->foreignId('music')->nullable()->constrained('musics')->nullOnDelete();
             $table->timestamps();
         });
     }

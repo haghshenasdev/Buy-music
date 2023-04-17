@@ -59,8 +59,13 @@
 
                 <p>لطفا ابتدا وراد حساب کاربری خود شوید . اگر حساب کاربری ندارید ثبت نام کنید.</p>
                 <div class="d-grid gap-2 d-md-block">
-                    <a href="{{ route('login') }}" class="btn btn-primary">ورود</a>
-                    <a href="{{ route('register') }}" class="btn btn-primary">ثبت نام</a>
+                    <a onclick="set_back_url()" href="{{ route('login') }}" class="btn btn-primary">ورود</a>
+                    <a onclick="set_back_url()" href="{{ route('register') }}" class="btn btn-primary">ثبت نام</a>
+                    <script !src="">
+                        function set_back_url(){
+                            document.cookie = 'bk_url={{url()->current()}}';
+                        }
+                    </script>
                 </div>
             @endif
 

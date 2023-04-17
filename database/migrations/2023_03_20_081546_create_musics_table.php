@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('description_download')->nullable();
             $table->boolean('presell')->nullable();
-            $table->boolean('is_active');
+            $table->boolean('is_active')->default(1);
         });
     }
 

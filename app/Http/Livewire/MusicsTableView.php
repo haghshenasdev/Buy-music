@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Actions\ActivateOrDeactiveAction;
 use App\Actions\DeleteAction;
+use App\Actions\MailingAction;
 use App\Actions\ShowAction;
 use App\Actions\ShowMusicAction;
 use App\Models\Buys;
@@ -31,7 +32,6 @@ class MusicsTableView extends TableView
             'عنوان',
             'تعداد خرید',
             'دریافتی',
-            'عملیات',
         ];
     }
 
@@ -55,6 +55,7 @@ class MusicsTableView extends TableView
             new ActivateOrDeactiveAction('music','admin'),
             new ShowAction('MusicShowAndEdit'),
             new ShowMusicAction(),
+            new MailingAction(),
         ];
     }
 }

@@ -5,6 +5,30 @@
 
     <div class="container">
 
+            <script !src="">
+                // جهت بازگشت به صفحه قبل از لاگین
+                function getCookie(cname) {
+                    let name = cname + "=";
+                    let decodedCookie = decodeURIComponent(document.cookie);
+                    let ca = decodedCookie.split(';');
+                    for(let i = 0; i <ca.length; i++) {
+                        let c = ca[i];
+                        while (c.charAt(0) == ' ') {
+                            c = c.substring(1);
+                        }
+                        if (c.indexOf(name) == 0) {
+                            return c.substring(name.length, c.length);
+                        }
+                    }
+                    return "";
+                }
+                $bk_url = getCookie('bk_url');
+                document.cookie = 'bk_url=;';
+                if ($bk_url != null && $bk_url !== ''){
+                    document.location = $bk_url;
+                }
+            </script>
+
         @can('admin')
             <div class="row justify-content-center mt-4">
                 <div class="col-md-8">

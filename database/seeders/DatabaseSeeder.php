@@ -37,6 +37,14 @@ class DatabaseSeeder extends Seeder
                 'key' => 'description_download',
                 'value' => '',
             ],
+            [
+                'key' => 'presell_mail_subject',
+                'value' => '',
+            ],
+            [
+                'key' => 'presell_mail_content',
+                'value' => '',
+            ],
         ]);
     }
 }

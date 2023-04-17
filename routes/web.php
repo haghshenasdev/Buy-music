@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\dashboard\MusicMailingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,7 @@ Route::get('/dashboard', function () {
 
 Route::group(['prefix' => 'dashboard','middleware' => ['auth','can:admin']],function (){
     Route::get('/new', [\App\Http\Controllers\dashboard\Musics::class,'new'])->name('newMusic');
+    Route::post('/new', [\App\Http\Controllers\dashboard\Musics::class,'create'])->name('newMusic');
     Route::get('/show', [\App\Http\Controllers\dashboard\Musics::class,'show'])->name('MusicShowAndEdit');
     Route::post('/show', [\App\Http\Controllers\dashboard\Musics::class,'update'])->name('MusicShowAndEdit');
     Route::delete('/delete', [\App\Http\Controllers\dashboard\Musics::class,'delete'])->name('deleteMusic');
@@ -32,6 +34,11 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','can:admin']],func
         Route::get('/show', [\App\Http\Controllers\dashboard\Settings::class,'show'])->name('settingShow');
         Route::post('/show', [\App\Http\Controllers\dashboard\Settings::class,'update'])->name('settingShow');
     });
+
+    Route::group(['prefix' => 'mailing'],function(){
+        Route::get('/show', [MusicMailingController::class,'index'])->name('mailingShow');
+        Route::post('/show', [MusicMailingController::class,'send']);
+    });
 });
 
 require __DIR__.'/auth.php';
@@ -39,7 +46,7 @@ require __DIR__.'/auth.php';
 Auth::routes();
 
 Route::get('/', [\App\Http\Controllers\home::class,'index'])->name('home');
-Route::get('/{slug}', [\App\Http\Controllers\home::class,'show']);
+Route::get('/{slug}', [\App\Http\Controllers\home::class,'show'])->name('show');
 Route::post('/{slug}', [\App\Http\Controllers\home::class,'pay']);
 Route::get('verify/{slug}', [\App\Http\Controllers\home::class,'verify'])->name('verify');
 Route::get('{slug}/download', [\App\Http\Controllers\home::class,'download'])->name('dl')->middleware('auth');

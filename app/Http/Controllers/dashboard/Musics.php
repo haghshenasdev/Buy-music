@@ -23,7 +23,7 @@ class Musics extends Dashboard
     public string $oneTemplate = 'seMusics';
     public string $canUpdate = 'admin';
     public string $canDelete = 'admin';
-    public string $routeShowAll = 'musics';
+    public string $routeShowAll = 'dashboard';
 
     public function repository(): \Illuminate\Database\Eloquent\Builder
     {
@@ -59,10 +59,14 @@ class Musics extends Dashboard
     {
         $validData = $this->getValidator($request);
 
+        $path = $validData['mfile'];
+        unset($validData['mfile']);
+
         $musicId = $this->repository()->insertGetId($validData);
         \App\Models\File::query()->insert([
             'music_id' => $musicId,
-            'path' => $validData['mfile'],
+            'path' => $path,
+            'title' => 'فایل'
         ]);
 
         return redirect()->back()->with(['success' => ' با موفقیت ایجاد شد .']);
