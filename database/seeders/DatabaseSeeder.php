@@ -22,27 +22,27 @@ class DatabaseSeeder extends Seeder
 
         Seting::query()->insert([
             [
-                'key' => 'home_title',
+                'name' => 'home_title',
                 'value' => 'حق لیبل',
             ],
             [
-                'key' => 'mid',
+                'name' => 'mid',
                 'value' => '9ef7f7f9-2a7d-4284-9c62-2a9393fb8ceb',
             ],
             [
-                'key' => 'bg_page',
+                'name' => 'bg_page',
                 'value' => '',
             ],
             [
-                'key' => 'description_download',
+                'name' => 'description_download',
                 'value' => '',
             ],
             [
-                'key' => 'presell_mail_subject',
+                'name' => 'presell_mail_subject',
                 'value' => '',
             ],
             [
-                'key' => 'presell_mail_content',
+                'name' => 'presell_mail_content',
                 'value' => '',
             ],
         ]);

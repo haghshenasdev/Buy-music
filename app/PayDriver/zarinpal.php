@@ -10,9 +10,11 @@
  * website 	: https://miladworkshop.ir
 */
 
-namespace App\PayDriver;
+namespace App\Paydriver;
 
-class zarinpal
+use SoapClient;
+
+class Zarinpal
 {
 	private function curl_check()
 	{

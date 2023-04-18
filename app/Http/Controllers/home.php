@@ -6,7 +6,7 @@ use App\Models\Buys;
 use App\Models\File;
 use App\Models\Music;
 use App\Models\Seting;
-use App\PayDriver\zarinpal;
+use App\Paydriver\Zarinpal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -67,7 +67,7 @@ class home extends Controller
 
         $CallbackURL 	= route('verify',[$slug]).'?amount='.$Amount;
 
-        $zp 	= new zarinpal();
+        $zp 	= new Zarinpal();
         $result = $zp->request($MerchantID, $Amount, $Description, $Email, $Mobile, $CallbackURL, $SandBox, $ZarinGate);
 
         if (isset($result["Status"]) && $result["Status"] == 100)
@@ -102,7 +102,7 @@ class home extends Controller
             $Amount = $music->amount;
         }
 
-        $zp 	= new zarinpal();
+        $zp 	= new Zarinpal();
         $result = $zp->verify($MerchantID, $Amount, $SandBox, $ZarinGate);
 
         $data = [];

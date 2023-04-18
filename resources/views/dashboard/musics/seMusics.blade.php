@@ -10,7 +10,7 @@
     @isset($data)
         {{$data['title']}}
     @else
-        افزودن پویش جدید
+        افزودن موزیک جدید
     @endisset
 @endsection
 

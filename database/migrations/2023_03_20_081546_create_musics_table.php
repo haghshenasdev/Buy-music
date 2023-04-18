@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('amount')->nullable();
             $table->string('bg_page')->nullable();
             $table->text('description');
-            $table->string('description_download')->nullable();
+            $table->text('description_download')->nullable();
             $table->boolean('presell')->nullable();
             $table->boolean('is_active')->default(1);
         });
