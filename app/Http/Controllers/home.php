@@ -135,9 +135,9 @@ class home extends Controller
 
     public function download($slug)
     {
-        $music = Music::query()->where('slug',$slug)->firstOrFail('id');
+        $music = Music::query()->where('slug',$slug)->firstOrFail(['id','presell']);
 
-        if (Buys::query()->where('user',Auth::id())->where('music',$music->id)->count() >= 1) {
+        if ($music->presell != 1 && Buys::query()->where('user',Auth::id())->where('music',$music->id)->count() >= 1) {
             return Storage::disk('private')->download(
                 File::query()->where('music_id',$music->id)->first('path')->path
             );
