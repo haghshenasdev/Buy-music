@@ -81,6 +81,7 @@ class Musics extends Dashboard
             'cover' => ['required', 'url'],
             'bg_page' => ['url','nullable'],
             'amount' => ['numeric','nullable'],
+            'min_amount' => ['numeric','nullable'],
             'presell' => ['bool','nullable'],
             'mfile' => ['string','nullable',Rule::requiredIf(!$request->has('presell'))],
             'description' => ['required', 'string'],

@@ -24,6 +24,10 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::group(['prefix' => 'dashboard','middleware' => ['auth','can:admin']],function (){
+    Route::get('profile', [\App\Http\Controllers\dashboard\Profile::class, 'index'])->name('profile');
+    Route::post('profile', [\App\Http\Controllers\dashboard\Profile::class, 'update'])->name('UpdateProfile');
+    Route::post('profile/cp', [\App\Http\Controllers\dashboard\Profile::class, 'changePass'])->name('changePass');
+
     Route::get('/new', [\App\Http\Controllers\dashboard\Musics::class,'new'])->name('newMusic');
     Route::post('/new', [\App\Http\Controllers\dashboard\Musics::class,'create'])->name('newMusic');
     Route::get('/show', [\App\Http\Controllers\dashboard\Musics::class,'show'])->name('MusicShowAndEdit');

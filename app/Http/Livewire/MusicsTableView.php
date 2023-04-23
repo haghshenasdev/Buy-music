@@ -53,6 +53,7 @@ class MusicsTableView extends TableView
     {
         return [
             new ActivateOrDeactiveAction('music','admin'),
+            new DeleteAction('موزیک','admin'),
             new ShowAction('MusicShowAndEdit'),
             new ShowMusicAction(),
             new MailingAction(),

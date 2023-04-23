@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('cover');
             $table->integer('amount')->nullable();
+            $table->integer('min_amount')->nullable();
             $table->string('bg_page')->nullable();
             $table->text('description');
             $table->text('description_download')->nullable();

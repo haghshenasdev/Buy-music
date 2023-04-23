@@ -125,6 +125,16 @@
     @enderror
 
     <div class="mb-3">
+        <label for="min_amount" class="col-form-label">حداقل مبلغ دلخواه :</label>
+        <input name="min_amount" type="number" class="form-control" id="min_amount"
+               value="@isset($data){{$data['min_amount']}}@else{{ old('min_amount') }}@endisset">
+        <p>این مورد تایین می کند حداقل مبلغ اعتبار سنجی مبلغ دلخواه برای خرید چقدر باشد (در صورت تعریف نشدن حداقل در موزیک).</p>
+    </div>
+    @error('min_amount')
+    <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
+
+    <div class="mb-3">
         <label for="tiny" class="col-form-label">توضیحات صفحه دانلود :</label>
         <textarea name="description_download" class="form-control" id="tiny">@isset($data)
                 {{$data['description_download']}}

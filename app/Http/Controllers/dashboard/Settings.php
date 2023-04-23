@@ -64,6 +64,7 @@ class Settings extends Dashboard
             'home_title' => ['required', 'string', 'max:255'],
             'mid' => ['required', 'string'],
             'bg_page' => ['url','nullable'],
+            'min_amount' => ['numeric','required'],
             'description_download' => ['string','nullable'],
         ];
 

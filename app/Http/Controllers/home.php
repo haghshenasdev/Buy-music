@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Buys;
 use App\Models\File;
 use App\Models\Music;
-use App\Models\Seting;
 use App\Paydriver\Zarinpal;
+use App\Setting\SettingSystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class home extends Controller
@@ -16,18 +17,10 @@ class home extends Controller
     public function index()
     {
         return view('home', [
-            'title' => Seting::query()->where('name', 'home_title')->get('value')->first()->value,
-            'bg_page' => $this->get_bg_page(),
+            'title' => SettingSystem::get('home_title'),
+            'bg_page' => SettingSystem::get_bg_page(),
             'musics' => Music::query()->where('is_active', 1)->get(['title', 'cover', 'slug','bg_page']),
         ]);
-    }
-
-    public function get_bg_page(Music $music = null)
-    {
-            if (is_null($music) || is_null($music->bg_page))
-                return Seting::query()->where('name', 'bg_page')->get('value')->first()->value;
-
-            return $music->bg_page;
     }
 
     public function show($slug)
@@ -37,9 +30,9 @@ class home extends Controller
         return view('show', [
             'title' => $music->title,
             'data' => $music,
-            'bg_page' => $this->get_bg_page($music),
+            'bg_page' => SettingSystem::get_bg_page($music),
             'routeDl' => route('dl',$slug),
-            'payed' => (Auth::check() && Buys::query()->where('user', Auth::id())->where('music', $music->id)->count() != 0)
+            'payed' => Gate::allows('payed',$music)
         ]);
     }
 
@@ -47,7 +40,7 @@ class home extends Controller
     {
         $music = Music::query()->where('slug',$slug)->firstOrFail();
 
-        $MerchantID 	= Seting::query()->where('name', 'mid')->get('value')->first()->value;
+        $MerchantID 	= SettingSystem::get('mid');
         $Amount 		= 0;
         $Description 	= "خرید ($music->title)";
         $Email 			= Auth::user()->email;
@@ -57,8 +50,9 @@ class home extends Controller
         $SandBox 		= true;
 
         if (is_null($music->amount)){
+            $min_amount = is_null($music->min_amount) ? SettingSystem::get('min_amount') : $music->min_amount;
             $validData = $request->validate([
-                'amount' => ['required', 'numeric', 'min:10000'],
+                'amount' => ['required', 'numeric', "min:$min_amount"],
             ]);
             $Amount = $validData['amount'];
         }else{
@@ -88,7 +82,7 @@ class home extends Controller
     {
         $music = Music::query()->where('slug',$slug)->firstOrFail();
 
-        $MerchantID 	= Seting::query()->where('name', 'mid')->get('value')->first()->value;
+        $MerchantID 	= SettingSystem::get('mid');
         $Amount 		= 0;
         $ZarinGate 		= false;
         $SandBox 		= true;
@@ -114,22 +108,17 @@ class home extends Controller
                 'user' => Auth::id(),
                 'music' => $music->id,
             ]);
-            $data['message'] = "تراکنش با موفقیت انجام شد";
+            $data['message'] = "تراکنش با موفقیت انجام شد . کد پیگیری : ". $result["RefID"];
             $data['success'] = true;
             $data['presell'] = $music->presell == 1;
             $data['routeDl'] = route('dl',$slug);
-//            echo "<br />مبلغ : ". $result["Amount"];
-//            echo "<br />کد پیگیری : ". $result["RefID"];
-//            echo "<br />Authority : ". $result["Authority"];
         } else {
             // error
-            $data['message'] = "پرداخت ناموفق";
+            $data['message'] = "پرداخت ناموفق . ".$result['Message'];
             $data['success'] = false;
-//            echo "<br />کد خطا : ". $result["Status"];
-//            echo "<br />تفسیر و علت خطا : ". $result["Message"];
         }
         $data['description_download'] = $music->description_download;
-        $data['bg_page'] = $this->get_bg_page();
+        $data['bg_page'] = SettingSystem::get_bg_page($music);
         return view('verifyAndDownload', $data);
     }
 
@@ -137,7 +126,7 @@ class home extends Controller
     {
         $music = Music::query()->where('slug',$slug)->firstOrFail(['id','presell']);
 
-        if ($music->presell != 1 && Buys::query()->where('user',Auth::id())->where('music',$music->id)->count() >= 1) {
+        if (Gate::allows('download',$music)) {
             return Storage::disk('private')->download(
                 File::query()->where('music_id',$music->id)->first('path')->path
             );

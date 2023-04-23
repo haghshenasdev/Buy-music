@@ -206,7 +206,17 @@
                value="@isset($data){{$data['amount']}}@else{{ old('amount') }}@endisset">
         <p>در صورت وارد نکردن مبلغ ، مبلغ دلخواه توسط کاربر در نظر گرفته می شود.</p>
     </div>
-    @error('title')
+    @error('amount')
+    <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
+
+    <div class="mb-3">
+        <label for="min_amount" class="col-form-label">حداقل مبلغ دلخواه :</label>
+        <input name="min_amount" type="number" class="form-control" id="min_amount"
+               value="@isset($data){{$data['min_amount']}}@else{{ old('min_amount') }}@endisset">
+        <p>در صورت وارد نکردن حداقل مبلغ دلخواه ، این مورد از تنظیمات کلی سیستم استفاده خواهد کرد.</p>
+    </div>
+    @error('min_amount')
     <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 

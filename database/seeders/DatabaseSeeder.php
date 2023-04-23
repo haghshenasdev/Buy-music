@@ -45,6 +45,10 @@ class DatabaseSeeder extends Seeder
                 'name' => 'presell_mail_content',
                 'value' => '',
             ],
+            [
+                'name' => 'min_amount',
+                'value' => '10000',
+            ],
         ]);
     }
 }

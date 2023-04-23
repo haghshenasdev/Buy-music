@@ -17,6 +17,7 @@ class Music extends Model
         'slug',
         'cover',
         'amount',
+        'min_amount',
         'bg_page',
         'description',
         'description_download',
