@@ -124,7 +124,7 @@ class home extends Controller
 
     public function download($slug)
     {
-        $music = Music::query()->where('slug',$slug)->firstOrFail(['id','presell']);
+        $music = Music::query()->where('slug',$slug)->firstOrFail(['id','presell','is_active']);
 
         if (Gate::allows('download',$music)) {
             return Storage::disk('private')->download(

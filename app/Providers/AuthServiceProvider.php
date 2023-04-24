@@ -38,7 +38,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('download',function (User $user,Music $music){
             return ($music->is_active == 1 &&
                 $music->presell != 1 &&
-                Gate::allows('payed',[$user,$music]));
+                Gate::allows('payed',$music));
         });
 
 
