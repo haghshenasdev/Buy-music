@@ -66,7 +66,7 @@ class home extends Controller
         $Mobile 		= "";
 
         $ZarinGate 		= false;
-        $SandBox 		= true;
+        $SandBox 		= Gate::allows('admin');
 
         if (is_null($music->amount)){
             $min_amount = is_null($music->min_amount) ? SettingSystem::get('min_amount') : $music->min_amount;
@@ -104,7 +104,7 @@ class home extends Controller
         $MerchantID 	= SettingSystem::get('mid');
         $Amount 		= 0;
         $ZarinGate 		= false;
-        $SandBox 		= true;
+        $SandBox 		= Gate::allows('admin');
 
         if (is_null($music->amount)){
             $validData = $request->validate([
