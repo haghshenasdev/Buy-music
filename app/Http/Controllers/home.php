@@ -147,8 +147,11 @@ class home extends Controller
         $music = Music::query()->where('slug',$slug)->firstOrFail(['id','presell','is_active']);
 
         if (Gate::allows('download',$music)) {
+            $path = File::query()->where('music_id',$music->id)->first('path')->path;
             return Storage::disk('private')->download(
-                File::query()->where('music_id',$music->id)->first('path')->path
+                $path,basename($path),[
+                    'Content-Length' => Storage::disk('private')->size($path)
+                ]
             );
         } else {
             abort(403, 'شما دسترسی دانلود این فایل را ندارید!');
