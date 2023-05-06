@@ -49,6 +49,7 @@ require __DIR__.'/auth.php';
 
 Auth::routes();
 
+Route::post('/comment', [\App\Http\Controllers\home::class,'comment'])->name('comment')->middleware('auth');
 Route::get('/', [\App\Http\Controllers\home::class,'index'])->name('home');
 Route::get('/{slug}', [\App\Http\Controllers\home::class,'show'])->name('show');
 Route::post('/{slug}', [\App\Http\Controllers\home::class,'pay']);

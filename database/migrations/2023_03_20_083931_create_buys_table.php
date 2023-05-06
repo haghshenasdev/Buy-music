@@ -18,6 +18,8 @@ return new class extends Migration
             $table->bigInteger('amount');
             $table->foreignId('user')->constrained('users');
             $table->foreignId('music')->nullable()->constrained('musics')->nullOnDelete();
+            $table->string('comment')->nullable();
+            $table->boolean('accept_commend')->nullable();
             $table->timestamps();
         });
     }

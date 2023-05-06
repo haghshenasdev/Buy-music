@@ -31,6 +31,15 @@
                         @csrf
 
                         <div class="mb-3">
+                            <label for="name" class="col-form-label">نام و نام خانوادگی :</label>
+                            <input name="name" type="text" class="form-control" id="name"
+                                   value="@isset($data){{$data['name']}}@else{{ old('name') }}@endisset">
+                        </div>
+                        @error('name')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+
+                        <div class="mb-3">
                             <label for="email" class="col-form-label">آدرس ایمیل :</label>
                             <input name="email" type="text" class="form-control" id="email"
                                    value="@isset($data){{$data['email']}}@else{{ old('email') }}@endisset">

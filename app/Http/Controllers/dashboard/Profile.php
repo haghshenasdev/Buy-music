@@ -24,6 +24,7 @@ class Profile extends Controller
     {
         $user = Auth::user();
         $validData = $request->validate([
+            'name' => ['required', 'string'],
             'email' => ['string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
         ]);
 

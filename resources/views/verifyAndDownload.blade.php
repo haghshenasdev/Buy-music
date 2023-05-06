@@ -22,6 +22,9 @@
                         <a class="btn btn-success mt-3" href="{{ $routeDl }}">دریافت موزیک</a>
                     @endif
                 @endif
+
+                <a class="btn btn-primary mt-3" href="{{ $routeBack }}">بازگشت به صفحه موزیک</a>
+
         </div>
 
     </div>

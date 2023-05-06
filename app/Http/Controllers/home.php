@@ -26,14 +26,33 @@ class home extends Controller
     public function show($slug)
     {
         $music = Music::query()->where('slug', $slug)->firstOrFail();
+        $topProtection = Buys::query()->where('music',$music->id)
+            ->orderByDesc('amount')
+            ->limit(5)
+            ->join('users','buys.user','=','users.id')
+            ->select(['buys.amount','buys.comment','buys.accept_commend','users.name'])->get();
 
         return view('show', [
             'title' => $music->title,
             'data' => $music,
+            'topProtection' => $topProtection,
             'bg_page' => SettingSystem::get_bg_page($music),
             'routeDl' => route('dl',$slug),
             'payed' => Gate::allows('payed',$music)
         ]);
+    }
+
+    public function comment(Request $request)
+    {
+        $validData = $request->validate([
+            'textComment' => ['required','string','max:255'],
+            'musicId' => ['required','exists:musics,id'],
+        ]);
+        Buys::query()->where('music',$validData['musicId'])->where('user',Auth::id())->update([
+            'comment' => $validData['textComment'],
+            'accept_commend' => null,
+        ]);
+        return back()->with('success','نظر شما با موفقیت ثبت شد و پس از تایید مدیر منتشر خواهد شد.');
     }
 
     public function pay(Request $request,$slug)
@@ -119,6 +138,7 @@ class home extends Controller
         }
         $data['description_download'] = $music->description_download;
         $data['bg_page'] = SettingSystem::get_bg_page($music);
+        $data['routeBack'] = route('show',$music->slug);
         return view('verifyAndDownload', $data);
     }
 
