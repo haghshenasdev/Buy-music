@@ -26,20 +26,27 @@ class home extends Controller
     public function show($slug)
     {
         $music = Music::query()->where('slug', $slug)->firstOrFail();
-        $topProtection = Buys::query()->where('music',$music->id)
-            ->orderByDesc('amount')
-            ->limit(5)
-            ->join('users','buys.user','=','users.id')
-            ->select(['buys.amount','buys.comment','buys.accept_commend','users.name'])->get();
+
+        $topProtection = $this->protectionQ($music)->orderByDesc('amount')->get();
+        $lastProtection = $this->protectionQ($music)->orderByDesc('buys.id')->get();
 
         return view('show', [
             'title' => $music->title,
             'data' => $music,
             'topProtection' => $topProtection,
+            'lastProtection' => $lastProtection,
             'bg_page' => SettingSystem::get_bg_page($music),
             'routeDl' => route('dl',$slug),
             'payed' => Gate::allows('payed',$music)
         ]);
+    }
+
+    private function protectionQ($music)
+    {
+        return Buys::query()->where('music',$music->id)
+            ->limit(5)
+            ->join('users','buys.user','=','users.id')
+            ->select(['buys.amount','buys.comment','buys.accept_commend','users.name']);
     }
 
     public function comment(Request $request)
