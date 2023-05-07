@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buys;
+use App\Models\Comments;
 use App\Models\File;
 use App\Models\Music;
 use App\Paydriver\Zarinpal;
 use App\Setting\SettingSystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,7 +21,7 @@ class home extends Controller
         return view('home', [
             'title' => SettingSystem::get('home_title'),
             'bg_page' => SettingSystem::get_bg_page(),
-            'musics' => Music::query()->where('is_active', 1)->get(['title', 'cover', 'slug','bg_page']),
+            'musics' => Music::query()->where('is_active', 1)->get(['title', 'cover','presell', 'slug','bg_page']),
         ]);
     }
 
@@ -46,7 +48,8 @@ class home extends Controller
         return Buys::query()->where('music',$music->id)
             ->limit(5)
             ->join('users','buys.user','=','users.id')
-            ->select(['buys.amount','buys.comment','buys.accept_commend','users.name']);
+            ->leftJoin('comments','buys.comment','=','comments.id')
+            ->select(['buys.amount','comments.comment','comments.is_active','buys.is_presell','users.name']);
     }
 
     public function comment(Request $request)
@@ -55,10 +58,26 @@ class home extends Controller
             'textComment' => ['required','string','max:255'],
             'musicId' => ['required','exists:musics,id'],
         ]);
-        Buys::query()->where('music',$validData['musicId'])->where('user',Auth::id())->update([
+
+        $commentData = [
             'comment' => $validData['textComment'],
-            'accept_commend' => null,
-        ]);
+            'is_active' => null,
+            'created_at' => Date::now(),
+        ];
+
+        $buy = Buys::query()->where('music',$validData['musicId'])
+            ->where('user',Auth::id())->firstOrFail();
+
+        if ($buy->comment != null) {
+            Comments::query()->find($buy->comment)->update($commentData);
+        }else{
+            $commentId = Comments::query()->insertGetId($commentData);
+            $buy->update([
+                'comment' => $commentId,
+            ]);
+            $buy->save();
+        }
+
         return back()->with('success','نظر شما با موفقیت ثبت شد و پس از تایید مدیر منتشر خواهد شد.');
     }
 
@@ -133,6 +152,9 @@ class home extends Controller
                 'amount' => $Amount,
                 'user' => Auth::id(),
                 'music' => $music->id,
+                'RefID' => $result['RefID'],
+                'is_presell' => $music->presell,
+                'created_at' => Date::now(),
             ]);
             $data['message'] = "تراکنش با موفقیت انجام شد . کد پیگیری : ". $result["RefID"];
             $data['success'] = true;

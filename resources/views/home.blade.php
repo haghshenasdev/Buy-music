@@ -13,7 +13,11 @@
                 <div class="col card forg-color p-3">
                     <img src="{{ $music['cover'] }}" class="card-img-top" alt="{{ $music['title'] }}">
                     <div class="card-body text-center">
-                        <h5 class="card-title">{{ $music['title'] }}</h5>
+                        <h5 class="card-title">{{ $music['title'] }}
+                            @if($music['presell'])
+                                <span class="badge rounded-pill text-bg-warning">پیش فروش </span>
+                            @endif
+                        </h5>
                         <a class="btn btn-primary w-100 mt-2" href="./{{ $music['slug'] }}">مشاهده</a>
                     </div>
                 </div>

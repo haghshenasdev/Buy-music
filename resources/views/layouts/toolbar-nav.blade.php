@@ -11,6 +11,9 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{route('settingShow')}}">تنظیمات</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{route('comments')}}">نظرات</a>
+                        </li>
                     @endcan
 
                 </ul>

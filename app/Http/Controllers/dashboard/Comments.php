@@ -16,59 +16,18 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 use Morilog\Jalali\CalendarUtils;
 
-class Musics extends Dashboard
+class Comments extends Dashboard
 {
-    public string $viewFolder = 'dashboard.musics';
-    public string $showAllTemplate = 'musics';
-    public string $oneTemplate = 'seMusics';
+    public string $viewFolder = 'dashboard.comments';
+    public string $showAllTemplate = 'comments';
+    public string $oneTemplate = 'seComments';
     public string $canUpdate = 'admin';
     public string $canDelete = 'admin';
-    public string $routeShowAll = 'dashboard';
+    public string $routeShowAll = 'comments';
 
     public function repository(): \Illuminate\Database\Eloquent\Builder
     {
-        return Music::query();
-    }
-
-    public function show(Request $request)
-    {
-        $data = $this->repository()->findOrFail($request->integer('id'))->toArray();
-        $file = \App\Models\File::query()->where('music_id',$request->integer('id'))->first('path');
-        $data['mfile'] = is_null($file) ? '' : $file->path;
-        return view($this->viewFolder . '.' . $this->oneTemplate,compact('data'));
-    }
-
-    public function update(Request $request)
-    {
-        $validData = $this->getValidator($request,false);
-
-        $item = $this->repository()->findOrFail($request->integer('id'));
-        if (Gate::allows($this->canUpdate,$item)){
-            $item->update($validData);
-            \App\Models\File::query()->where('music_id',$request->integer('id'))->first()->update([
-                'path' => $validData['mfile'],
-            ]);
-        }else{
-            abort(403);
-        }
-
-        return redirect()->back()->with(['success' => 'بروز رسانی با موفقیت انجام شد .']);
-    }
-
-    public function create(Request $request)
-    {
-        $validData = $this->getValidator($request);
-
-        $path = $validData['mfile'];
-        unset($validData['mfile']);
-
-        $musicId = $this->repository()->insertGetId($validData);
-        \App\Models\File::query()->insert([
-            'music_id' => $musicId,
-            'path' => $path,
-        ]);
-
-        return redirect()->back()->with(['success' => ' با موفقیت ایجاد شد .']);
+        return \App\Models\Comments::query();
     }
 
 
