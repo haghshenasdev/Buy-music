@@ -41,8 +41,8 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth']],function (){
         });
 
         Route::group(['prefix' => 'comments'],function(){
-            Route::get('/', [\App\Http\Controllers\dashboard\Buys::class,'index'])->name('comments');
-            Route::post('/show', [\App\Http\Controllers\dashboard\Buys::class,'update']);
+            Route::get('/', [\App\Http\Controllers\dashboard\Comments::class,'index'])->name('comments');
+            Route::post('/show', [\App\Http\Controllers\dashboard\Comments::class,'update']);
         });
 
         Route::group(['prefix' => 'mailing'],function(){
