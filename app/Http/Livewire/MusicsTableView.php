@@ -34,6 +34,7 @@ class MusicsTableView extends TableView
             'عنوان',
             'تعداد خرید',
             'دریافتی (تومان)',
+            'نوع فروش',
         ];
     }
 
@@ -48,6 +49,7 @@ class MusicsTableView extends TableView
             $model->title,
             Buys::query()->where('music',$model->id)->count('id'),
             number_format(Buys::query()->where('music',$model->id)->sum('amount')),
+            $model->presell ? 'پیش فروش' : 'فروش',
         ];
     }
 
