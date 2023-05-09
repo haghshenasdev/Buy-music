@@ -24,6 +24,8 @@
     <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
+    @include('layouts.recapchaDark')
+
     <input class="btn btn-primary" type="submit"
            value="ارسال نظر">
 </form>

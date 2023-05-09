@@ -6,6 +6,7 @@ use App\Actions\ActivateOrDeactiveAction;
 use App\Actions\DeleteCommentAction;
 use App\Actions\MailingAction;
 use App\Actions\ShowAction;
+use App\Actions\ShowBuysAction;
 use App\Actions\ShowCommentsAction;
 use App\Actions\ShowMusicAction;
 use App\Models\Buys;
@@ -59,6 +60,7 @@ class MusicsTableView extends TableView
             new ShowMusicAction(),
             new MailingAction(),
             new ShowCommentsAction(),
+            new ShowBuysAction(),
         ];
     }
 }

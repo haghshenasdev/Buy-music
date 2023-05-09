@@ -14,6 +14,12 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{route('comments')}}">نظرات</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{route('users')}}">کاربران</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{route('buys')}}">خرید ها</a>
+                        </li>
                     @endcan
 
                 </ul>

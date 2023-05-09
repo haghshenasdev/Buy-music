@@ -2,25 +2,21 @@
 
 namespace App\Http\Livewire;
 
-use App\Actions\AcceptCommentsAction;
 use App\Actions\ActivateOrDeactiveAction;
-use App\Actions\DeleteCommentAction;
-use App\Actions\MailingAction;
+use App\Actions\DeleteAction;
 use App\Actions\ShowAction;
 use App\Actions\ShowBuysAction;
-use App\Actions\ShowMusicAction;
+use App\Http\Livewire\Current;
 use App\Models\Buys;
-use App\Models\Music;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
+use LaravelViews\Facades\Header;
 use LaravelViews\Views\TableView;
+use Morilog\Jalali\Jalalian;
 
-class CommentsTableView extends TableView
+class BuysTableView extends TableView
 {
-
-    public $sortOrder = 'desc';
-    public $sortBy = 'id';
-
     /**
      * Sets a model class to get the initial data
      */
@@ -32,10 +28,15 @@ class CommentsTableView extends TableView
             $q->where('music',Request::integer('mid'));
         }
         return $q->join('users','buys.user','=','users.id')
-            ->join('comments','buys.comment','=','comments.id')
             ->join('musics','buys.music','=','musics.id')
-            ->select(['buys.id','musics.title','comments.id as comments_id','comments.comment','comments.is_active','users.name','users.name']);
+            ->select(['buys.id','buys.amount','buys.created_at','buys.is_presell','buys.RefID','users.name','users.email','musics.title']);
     }
+
+    public $searchBy = ['name', 'email'];
+
+    public $sortOrder = 'desc';
+
+    public $sortBy = 'id';
 
     /**
      * Sets the headers of the table as you want to be displayed
@@ -45,10 +46,16 @@ class CommentsTableView extends TableView
     public function headers(): array
     {
         $headers = [
-            'نام کاربر',
-            'نظر',
+            Header::title('id')->sortBy('id'),
+            'کاربر',
+            Header::title('مبلغ (تومان)')->sortBy('amount'),
+            'تاریخ خرید',
+            'نوع خرید',
+            'کد پیگیری تراکنش',
         ];
+
         if (!Request::has('mid')) $headers[] = 'موزیک';
+
         return $headers;
     }
 
@@ -60,18 +67,23 @@ class CommentsTableView extends TableView
     public function row($model): array
     {
         $row = [
-            $model->name,
-            $model->comment,
+            $model->id,
+            $model->name . '<br>' . $model->email,
+            number_format($model->amount),
+            Jalalian::fromDateTime($model->created_at),
+            $model->is_presell ? 'پیش خرید' : 'خرید',
+            $model->RefID,
         ];
+
         if (!Request::has('mid')) $row[] = $model->title;
+
         return $row;
     }
 
     protected function actionsByRow()
     {
         return [
-            new AcceptCommentsAction('نظر','admin'),
-            new DeleteCommentAction('نظر','admin'),
+            new DeleteAction('خرید','admin'),
         ];
     }
 }

@@ -52,6 +52,10 @@ class DatabaseSeeder extends Seeder
                 'name' => 'min_amount',
                 'value' => '10000',
             ],
+            [
+                'name' => 'welcome_message',
+                'value' => '<p>$name عزیز به جمع خانواده حق لیبل خوش آمدید .</p>',
+            ],
         ]);
 
         User::query()->insert([

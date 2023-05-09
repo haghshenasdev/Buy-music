@@ -53,6 +53,12 @@ class RegisterController extends Controller
             'name' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'g-recaptcha-response' => 'required|captcha'
+        ],[
+            'g-recaptcha-response' => [
+                'required' => 'لطفا تیک ریکپچا را بزنید.',
+                'captcha' => 'کپچا درست نیست ، لطفا دوباره تلاش کنید.',
+            ],
         ]);
     }
 

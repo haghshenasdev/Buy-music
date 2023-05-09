@@ -76,6 +76,8 @@
                             @enderror
                         @endif
 
+                        @include('layouts.recapchaDark')
+
                         <button type="submit" class="btn btn-primary">خرید و حمایت</button>
                     </form>
 

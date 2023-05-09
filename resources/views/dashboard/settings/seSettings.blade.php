@@ -144,4 +144,15 @@
     <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
+    <div class="mb-3">
+        <label for="tiny" class="col-form-label">ایمیل خوش آمد :</label>
+        <p>مقدار $name با نام کاربر جایگزین می شود .</p>
+        <textarea name="welcome_message" class="form-control" id="tiny">@isset($data)
+                {{$data['welcome_message']}}
+            @endisset</textarea>
+    </div>
+    @error('welcome_message')
+    <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
+
 @endsection

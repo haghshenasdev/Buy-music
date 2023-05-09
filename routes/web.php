@@ -41,13 +41,26 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth']],function (){
         });
 
         Route::group(['prefix' => 'comments'],function(){
-            Route::get('/', [\App\Http\Controllers\dashboard\Comments::class,'index'])->name('comments');
-            Route::post('/show', [\App\Http\Controllers\dashboard\Comments::class,'update']);
+            Route::get('/', [\App\Http\Controllers\dashboard\Buys::class,'index'])->name('comments');
+            Route::post('/show', [\App\Http\Controllers\dashboard\Buys::class,'update']);
         });
 
         Route::group(['prefix' => 'mailing'],function(){
             Route::get('/show', [MusicMailingController::class,'index'])->name('mailingShow');
             Route::post('/show', [MusicMailingController::class,'send']);
+        });
+
+        Route::group(['prefix' => 'users'],function (){
+            Route::get('/', [\App\Http\Controllers\dashboard\Users::class, 'index'])->name('users');
+            Route::get('show', [\App\Http\Controllers\dashboard\Users::class, 'show'])->name('showUser');
+            Route::post('show', [\App\Http\Controllers\dashboard\Users::class, 'update'])->name('updateUser');
+            Route::get('new', [\App\Http\Controllers\dashboard\Users::class, 'new'])->name('newUser');
+            Route::post('new', [\App\Http\Controllers\dashboard\Users::class, 'create'])->name('createUser');
+            Route::delete('delete', [\App\Http\Controllers\dashboard\Users::class, 'delete'])->name('deleteUser');
+        });
+
+        Route::group(['prefix' => 'buys'],function(){
+            Route::get('/', [\App\Http\Controllers\dashboard\Buys::class,'index'])->name('buys');
         });
     });
 

@@ -57,6 +57,12 @@ class home extends Controller
         $validData = $request->validate([
             'textComment' => ['required','string','max:255'],
             'musicId' => ['required','exists:musics,id'],
+            'g-recaptcha-response' => 'required|captcha'
+        ],[
+                'g-recaptcha-response' => [
+                    'required' => 'لطفا تیک ریکپچا را بزنید.',
+                    'captcha' => 'کپچا درست نیست ، لطفا دوباره تلاش کنید.',
+                ],
         ]);
 
         $commentData = [
@@ -98,6 +104,12 @@ class home extends Controller
             $min_amount = is_null($music->min_amount) ? SettingSystem::get('min_amount') : $music->min_amount;
             $validData = $request->validate([
                 'amount' => ['required', 'numeric', "min:$min_amount"],
+                'g-recaptcha-response' => 'required|captcha',
+            ],[
+                'g-recaptcha-response' => [
+                    'required' => 'لطفا تیک ریکپچا را بزنید.',
+                    'captcha' => 'کپچا درست نیست ، لطفا دوباره تلاش کنید.',
+                ],
             ]);
             $Amount = $validData['amount'];
         }else{

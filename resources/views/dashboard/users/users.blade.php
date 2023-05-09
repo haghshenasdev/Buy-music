@@ -12,7 +12,7 @@
                             افزودن کاربر جدید
                         </a>
 
-                        @livewire('tables.users-table-view')
+                        @livewire('users-table-view')
                     </div>
                 </div>
 

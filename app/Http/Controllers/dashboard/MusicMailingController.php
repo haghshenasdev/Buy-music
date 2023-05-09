@@ -4,6 +4,7 @@ namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Mail\ThemeMusicMail;
+use App\Mail\welcomeMail;
 use App\Models\Buys;
 use App\Models\Music;
 use App\Models\Seting;
