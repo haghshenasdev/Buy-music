@@ -1,7 +1,7 @@
 @extends('master.theme')
 
 @section('content')
-    <div class="row mx-3 row-cols-1 row-cols-md-4 justify-content-center gap-2" id="content" style="margin-top: -100px">
+    <div class="row mx-3 row-cols-1 row-cols-md-4 justify-content-center gap-2" id="content" style="margin-top: -70px">
         @if(count($musics) == 0)
             <div class="col card forg-color p-3">
                 <div class="card-body text-center">
@@ -23,5 +23,11 @@
                 </div>
             @endforeach
         @endif
+    </div>
+
+    <div class="row">
+        <div class="col col-lg-4 m-auto mt-5">
+            {{ $musics->links() }}
+        </div>
     </div>
 @endsection

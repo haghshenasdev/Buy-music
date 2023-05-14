@@ -15,6 +15,9 @@
 </head>
 <body>
 
+@include('master.nav')
+
+
 <img src="{{ (isset($bg_page)) ? $bg_page : asset('assets/image/header.jpg') }}" class="img-fluid w-100">
 
 <div class="container-fluid">

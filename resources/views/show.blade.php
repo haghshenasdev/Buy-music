@@ -1,7 +1,7 @@
 @extends('master.theme')
 
 @section('content')
-    <div class="row mx-3" id="content" style="margin-top: -100px">
+    <div class="row mx-3" id="content" style="margin-top: -70px">
         <div class="col forg-color mx-auto p-3 row">
             <img src="{{ $data['cover'] }}" class="col-lg-4 col mb-3 m-auto" alt="{{ $data['title'] }}">
 
@@ -12,22 +12,77 @@
     </div>
 
     <div class="row mx-3 mt-3 gap-3">
-        <div class="col text-center forg-color mx-auto p-3">
-            @auth()
-                @if($payed)
-                    @if($data['presell'] == 1)
-                        <h1>شما موزیک را پیش خرید کرده اید</h1>
-                        <p> {!! $data['description_download'] !!}</p>
+        <div class="col p-0">
+            <div class="text-center forg-color p-3">
+                @auth()
+                    @if($payed)
+                        @if($data['presell'] == 1)
+                            <h1>شما موزیک را پیش خرید کرده اید</h1>
+                            <p> {!! $data['description_download'] !!}</p>
+                        @else
+                            <h1>شما موزیک را خریده اید</h1>
+                            <p> {!! $data['description_download'] !!}</p>
+                            <a class="btn btn-success mt-3" href="{{ $routeDl }}">دریافت موزیک</a>
+                        @endif
+
+                        <div class="m-3">
+                            @include('layouts.comment')
+                        </div>
+
                     @else
-                        <h1>شما موزیک را خریده اید</h1>
-                        <p> {!! $data['description_download'] !!}</p>
-                        <a class="btn btn-success mt-3" href="{{ $routeDl }}">دریافت موزیک</a>
+                        @if($data['presell'])
+                            <h1>پیش خرید</h1>
+                        @else
+                            <h1>خرید و دانلود</h1>
+                        @endif
+
+                        <form method="post">
+                            @csrf
+                            @if($data['amount'])
+                                <div class="mb-3 mt-3">
+                                    <label for="exampleInputEmail1" class="form-label">مبلغ
+                                        : {{ number_format($data['amount']) }} تومان</label>
+                                </div>
+                            @else
+                                <div class="mt-3 row">
+                                    @php
+                                        $min_amount = is_null($data['min_amount']) ? App\Setting\SettingSystem::get('min_amount') : $data['min_amount'];
+                                    @endphp
+                                    <label for="exampleInputEmail1" class="form-label">مبلغ دلخواه (حداقل مبلغ برای این موزیک {{ number_format($min_amount) }} تومان) :</label>
+                                    <div class="col col-lg-4 mx-auto">
+                                        <div class="input-group">
+                                            <input onkeyup="toPr(this.value)" value="{{ $min_amount }}" name="amount" type="number" class="form-control" id="amount-input"
+                                                   aria-describedby="emailHelp">
+                                            <span class="input-group-text">تومان</span>
+                                        </div>
+                                    </div>
+                                    <p class="mt-3" id="prOut"></p>
+
+                                    <script src="https://cdn.jsdelivr.net/gh/mahmoud-eskandari/NumToPersian/dist/num2persian-min.js"></script>
+                                    <script>
+                                        function toPr(num) {
+                                            let el = document.getElementById('prOut');
+                                            el.innerText = "معادل : " + Num2persian(num) + " تومان";
+                                            let min = {{ $min_amount }};
+                                            if(num < min){
+                                                el.className = 'mt-3 text-danger';
+                                            }else{
+                                                el.className = 'mt-3';
+                                            }
+                                        }
+                                    </script>
+                                </div>
+                                @error('amount')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            @endif
+
+                            @include('layouts.recapchaDark')
+
+                            <button type="submit" class="btn btn-primary">خرید و حمایت</button>
+                        </form>
+
                     @endif
-
-                    <div class="m-3">
-                        @include('layouts.comment')
-                    </div>
-
                 @else
                     @if($data['presell'])
                         <h1>پیش خرید</h1>
@@ -35,71 +90,18 @@
                         <h1>خرید و دانلود</h1>
                     @endif
 
-                    <form method="post">
-                        @csrf
-                        @if($data['amount'])
-                            <div class="mb-3 mt-3">
-                                <label for="exampleInputEmail1" class="form-label">مبلغ
-                                    : {{ number_format($data['amount']) }} تومان</label>
-                            </div>
-                        @else
-                            <div class="mt-3 row">
-                                @php
-                                $min_amount = is_null($data['min_amount']) ? App\Setting\SettingSystem::get('min_amount') : $data['min_amount'];
-                                @endphp
-                                <label for="exampleInputEmail1" class="form-label">مبلغ دلخواه (حداقل مبلغ برای این موزیک {{ number_format($min_amount) }} تومان) :</label>
-                                <div class="col col-lg-4 mx-auto">
-                                    <div class="input-group">
-                                        <input onkeyup="toPr(this.value)" value="{{ $min_amount }}" name="amount" type="number" class="form-control" id="amount-input"
-                                               aria-describedby="emailHelp">
-                                        <span class="input-group-text">تومان</span>
-                                    </div>
-                                </div>
-                                <p class="mt-3" id="prOut"></p>
-
-                                <script src="https://cdn.jsdelivr.net/gh/mahmoud-eskandari/NumToPersian/dist/num2persian-min.js"></script>
-                                <script>
-                                    function toPr(num) {
-                                        let el = document.getElementById('prOut');
-                                        el.innerText = "معادل : " + Num2persian(num) + " تومان";
-                                        let min = {{ $min_amount }};
-                                        if(num < min){
-                                            el.className = 'mt-3 text-danger';
-                                        }else{
-                                            el.className = 'mt-3';
-                                        }
-                                    }
-                                </script>
-                            </div>
-                            @error('amount')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                        @endif
-
-                        @include('layouts.recapchaDark')
-
-                        <button type="submit" class="btn btn-primary">خرید و حمایت</button>
-                    </form>
-
+                    <p>لطفا ابتدا وراد حساب کاربری خود شوید . اگر حساب کاربری ندارید ثبت نام کنید.</p>
+                    <div class="d-grid gap-2 d-md-block">
+                        <a onclick="set_back_url()" href="{{ route('login') }}" class="btn btn-primary">ورود</a>
+                        <a onclick="set_back_url()" href="{{ route('register') }}" class="btn btn-primary">ثبت نام</a>
+                        <script !src="">
+                            function set_back_url(){
+                                document.cookie = 'bk_url={{url()->current()}}';
+                            }
+                        </script>
+                    </div>
                 @endif
-            @else
-                @if($data['presell'])
-                    <h1>پیش خرید</h1>
-                @else
-                    <h1>خرید و دانلود</h1>
-                @endif
-
-                <p>لطفا ابتدا وراد حساب کاربری خود شوید . اگر حساب کاربری ندارید ثبت نام کنید.</p>
-                <div class="d-grid gap-2 d-md-block">
-                    <a onclick="set_back_url()" href="{{ route('login') }}" class="btn btn-primary">ورود</a>
-                    <a onclick="set_back_url()" href="{{ route('register') }}" class="btn btn-primary">ثبت نام</a>
-                    <script !src="">
-                        function set_back_url(){
-                            document.cookie = 'bk_url={{url()->current()}}';
-                        }
-                    </script>
-                </div>
-            @endif
+            </div>
 
         </div>
 
@@ -113,6 +115,9 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">آخرین</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#comments-tab-pane" type="button" role="tab" aria-controls="comments-tab-pane" aria-selected="false">نظرات</button>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
@@ -201,7 +206,12 @@
                             </div>
                         @endforeach
                     </div>
-                </div>
+
+                    <div class="tab-pane fade" id="comments-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                        @livewire('comments-component', ['musicId' => $data['id']])
+                    </div>
+
+                    </div>
 
             </div>
         </div>

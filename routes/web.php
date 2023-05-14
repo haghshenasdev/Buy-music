@@ -15,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', [\App\Http\Controllers\home::class,'index'])->name('home');
+Route::get('help',function (){
+    return view('help',['title' => 'راهنما']);
+})->name('help');
+Route::get('about',function (){
+    return view('about',['title' => 'درباره ما']);
+})->name('about');
+
 Route::group(['prefix' => 'filemanager', 'middleware' => ['web', 'auth','can:admin']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
@@ -69,7 +77,6 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth']],function (){
 require __DIR__.'/auth.php';
 
 Route::post('/comment', [\App\Http\Controllers\home::class,'comment'])->name('comment')->middleware('auth');
-Route::get('/', [\App\Http\Controllers\home::class,'index'])->name('home');
 Route::get('/{slug}', [\App\Http\Controllers\home::class,'show'])->name('show');
 Route::post('/{slug}', [\App\Http\Controllers\home::class,'pay']);
 Route::get('verify/{slug}', [\App\Http\Controllers\home::class,'verify'])->name('verify');
