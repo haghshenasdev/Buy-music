@@ -9,6 +9,7 @@
         "ext-soap": "*",
         "alexusmai/laravel-file-manager": "^3.0",
         "anhskohbo/no-captcha": "^3.5",
+        "filament/filament": "^2.17",
         "guzzlehttp/guzzle": "^7.5",
         "josiasmontag/laravel-recaptchav3": "^1.0",
         "laravel-views/laravel-views": "^2.4",
@@ -48,7 +49,8 @@
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan filament:upgrade"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
