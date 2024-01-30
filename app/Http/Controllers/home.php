@@ -21,7 +21,7 @@ class home extends Controller
         return view('home', [
             'title' => SettingSystem::get('home_title'),
             'bg_page' => SettingSystem::get_bg_page(),
-            'musics' => Music::query()->where('is_active', 1)->paginate(10,['title', 'cover','presell', 'slug','bg_page']),
+            'musics' => Music::query()->where('is_active', 1)->orderBy('sort')->orderBy('id')->paginate(10,['title', 'cover','presell', 'slug','bg_page']),
         ]);
     }
 

@@ -23,5 +23,6 @@ class Music extends Model
         'description_download',
         'presell',
         'is_active',
+        'sort',
     ];
 }
