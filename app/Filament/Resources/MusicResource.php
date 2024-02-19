@@ -23,6 +23,7 @@ use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 
 class MusicResource extends Resource
 {
@@ -40,19 +41,26 @@ class MusicResource extends Resource
                             $set('slug', Str::slug($state));
                         }
                     })
+                    ->label("نام")
                     ->reactive()
                     ->required(),
                 TextInput::make('slug')
                     ->afterStateUpdated(function (Closure $set) {
                         $set('is_slug_changed_manually', true);
                     })
+                    ->label("آدرس")
                     ->required(),
                 Hidden::make('is_slug_changed_manually')
                     ->default(false)
                     ->dehydrated(false),
-                FileUpload::make('cover')->image()->disk('public'),
-                FileUpload::make('bg_page')->image()->disk('public'),
-                RichEditor::make('description')
+                Forms\Components\Checkbox::make("is_active")->label("نمایش در سایت"),
+                Forms\Components\Checkbox::make("presell")->label("پیش خرید"),
+                TextInput::make("amount")->numeric()->label("قیمت"),
+                TextInput::make("min_amount")->numeric()->label("حداقل قیمت"),
+                FileUpload::make('cover')->image()->disk('public')->label("کاور")->required(),
+                FileUpload::make('bg_page')->image()->disk('public')->label("تصویر زمینه"),
+                TinyEditor::make('description')->label("توضیحات")->required(),
+                TinyEditor::make('description_download')->label("توضیحات دانلود"),
 
             ]);
     }
