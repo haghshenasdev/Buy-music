@@ -11,7 +11,7 @@
         @else
             @foreach($musics as $music)
                 <div class="col card forg-color p-3">
-                    <img src="{{ $music['cover'] }}" class="card-img-top" alt="{{ $music['title'] }}">
+                    <img src="{{ !str_starts_with($music['cover'],"http") ? \Illuminate\Support\Facades\Storage::url($music['cover']) : $music['cover']}}" class="card-img-top" alt="{{ $music['title'] }}">
                     <div class="card-body text-center">
                         <h5 class="card-title">{{ $music['title'] }}
                             @if($music['presell'])

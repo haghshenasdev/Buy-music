@@ -32,6 +32,8 @@ class home extends Controller
         $topProtection = $this->protectionQ($music)->orderByDesc('amount')->get();
         $lastProtection = $this->protectionQ($music)->orderByDesc('buys.id')->get();
 
+        if (!str_starts_with($music->cover,"http")) $music->cover = Storage::url($music->cover);
+
         return view('show', [
             'title' => $music->title,
             'data' => $music,
