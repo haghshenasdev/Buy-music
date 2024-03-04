@@ -22,7 +22,13 @@
                     </li>
                     @auth()
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">حساب کاربری</a>
+                            <a class="nav-link active" aria-current="page" href="{{ route('dashboard') }}">موزیک های خریداری شده / داشبورد</a>
+                        </li>
+                        <li class="nav-item">
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                            <button type="submit" class="btn btn-link nav-link active" aria-current="page">خروج از حساب کاربری</button>
+                            </form>
                         </li>
                     @else
                         <li class="nav-item">

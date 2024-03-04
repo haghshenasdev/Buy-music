@@ -15,7 +15,7 @@ class PasswordResetLinkController extends Controller
      */
     public function create(): View
     {
-        return view('auth.forgot-password');
+        return view('myAuth.passwords.email');
     }
 
     /**
@@ -27,6 +27,12 @@ class PasswordResetLinkController extends Controller
     {
         $request->validate([
             'email' => ['required', 'email'],
+            'g-recaptcha-response' => 'required|captcha'
+        ],[
+            'g-recaptcha-response' => [
+                'required' => 'لطفا تیک ریکپچا را بزنید.',
+                'captcha' => 'کپچا درست نیست ، لطفا دوباره تلاش کنید.',
+            ],
         ]);
 
         // We will send the password reset link to this user. Once we have attempted

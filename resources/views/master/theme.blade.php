@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <title>@isset($title) {{ $title }}@elseدانلود موزیک @endisset </title>
-
+    @yield('header')
 </head>
 <body>
 

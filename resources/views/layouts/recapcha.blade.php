@@ -1,7 +1,7 @@
-<div class="row mb-3">
-    <label for="password" class="col-md-4 col-form-label text-md-end">کپچا</label>
+<div class="mb-3">
+    <label for="password" class="col col-form-label text-md-end">کپچا</label>
 
-    <div class="col-md-6">
+    <div class="col">
         {!! NoCaptcha::renderJs() !!}
         {!! NoCaptcha::display() !!}
         @error('g-recaptcha-response')
