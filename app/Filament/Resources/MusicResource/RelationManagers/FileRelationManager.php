@@ -26,7 +26,7 @@ class FileRelationManager extends RelationManager
                     ->maxLength(255),
                 Forms\Components\ViewField::make('path')
                     ->view("filament.forms.components.file-upload")
-                    ->label('آپلود فایل')
+                    ->label('فایل موزیک')
                     ->required(),
             ]);
     }
