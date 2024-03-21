@@ -93,7 +93,7 @@ class MusicResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            MusicResource\RelationManagers\FileRelationManager::class,
         ];
     }
 
