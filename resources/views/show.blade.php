@@ -22,7 +22,26 @@
                         @else
                             <h1>شما موزیک را خریده اید</h1>
                             <p> {!! $data['description_download'] !!}</p>
+                        @if(count($files) > 1)
+                            <table class="table table-dark mt-3">
+                                <thead>
+                                <tr>
+                                    <th scope="col">نام فایل</th>
+                                    <th scope="col">دریافت</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($files as $file)
+                                    <tr>
+                                        <th scope="row">{{ $file['title'] }}</th>
+                                        <td><a class="btn btn-success mt-3" href="{{ route('dl',[$data['slug'],$file['id']]) }}">دانلود</a></td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                            @else
                             <a class="btn btn-success mt-3" href="{{ $routeDl }}">دریافت موزیک</a>
+                            @endif
                         @endif
 
                         <div class="m-3">

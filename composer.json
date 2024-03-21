@@ -19,7 +19,8 @@
         "laravel/ui": "^4.2",
         "mohamedsabil83/filament-forms-tinyeditor": "1.7.5",
         "morilog/jalali": "^3.4",
-        "unisharp/laravel-filemanager": "^2.6"
+        "unisharp/laravel-filemanager": "^2.6",
+      "ext-mysql_xdevapi": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

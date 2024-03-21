@@ -33,13 +33,13 @@ class home extends Controller
         $lastProtection = $this->protectionQ($music)->orderByDesc('buys.id')->get();
 
         if (!str_starts_with($music->cover,"http")) $music->cover = Storage::url($music->cover);
-
         return view('show', [
             'title' => $music->title,
             'data' => $music,
             'topProtection' => $topProtection,
             'lastProtection' => $lastProtection,
             'bg_page' => SettingSystem::get_bg_page($music),
+            'files' => $music->file()->get(),
             'routeDl' => route('dl',$slug),
             'payed' => Gate::allows('payed',$music)
         ]);
@@ -185,20 +185,35 @@ class home extends Controller
         return view('verifyAndDownload', $data);
     }
 
-    public function download($slug)
+    public function download($slug,$fileId = null)
     {
         $music = Music::query()->where('slug',$slug)->firstOrFail(['id','presell','is_active']);
 
         if (Gate::allows('download',$music)) {
-            $path = File::query()->where('music_id',$music->id)->first('path')->path;
+            $path = null;
+            if ($fileId != null){
+                $path = $music->file()->where('id',$fileId)->first('path')->path;
+            }else{
+                $path = File::query()->where('music_id',$music->id)->first('path')->path;
+            }
+            return $this->show_dl($path);
+        } else {
+            abort(403, 'شما دسترسی دانلود این فایل را ندارید!');
+        }
+    }
+
+    private function show_dl($path){
+        if ($path == null) abort(404,'فایلی برای دانلود یافت نشد ! احتمالا فایل حذف شده یا جا به جا شده است.');
+        try {
             return Storage::disk('private')->download(
                 $path,basename($path),[
                     'Content-Length' => Storage::disk('private')->size($path)
                 ]
             );
-        } else {
-            abort(403, 'شما دسترسی دانلود این فایل را ندارید!');
+        }catch (\Exception $e){
+            abort(404,'فایلی برای دانلود یافت نشد !');
         }
+
     }
 
 }

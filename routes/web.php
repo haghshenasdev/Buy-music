@@ -80,5 +80,5 @@ Route::post('/comment', [\App\Http\Controllers\home::class,'comment'])->name('co
 Route::get('/{slug}', [\App\Http\Controllers\home::class,'show'])->name('show');
 Route::post('/{slug}', [\App\Http\Controllers\home::class,'pay']);
 Route::get('verify/{slug}', [\App\Http\Controllers\home::class,'verify'])->name('verify');
-Route::get('{slug}/download', [\App\Http\Controllers\home::class,'download'])->name('dl')->middleware('auth');
+Route::get('{slug}/download/{fileId?}', [\App\Http\Controllers\home::class,'download'])->name('dl')->middleware('auth');
 
